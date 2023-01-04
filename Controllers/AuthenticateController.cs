@@ -62,7 +62,8 @@ namespace universite_psycho_canine_api.Controllers
                 {
                     Token = new JwtSecurityTokenHandler().WriteToken(token),
                     RefreshToken = refreshToken,
-                    Expiration = token.ValidTo
+                    Expiration = token.ValidTo,
+                    username = model.Username
                 });
             }
             return Unauthorized();
@@ -84,6 +85,7 @@ namespace universite_psycho_canine_api.Controllers
             };
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
+                // Console.WriteLine(result);
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
 
             return Ok(new Response { Status = "Success", Message = "User created successfully!" });
